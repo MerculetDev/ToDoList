@@ -1,35 +1,24 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { db } from '../initFirebase'
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { todos } from '@/models/todos'
 
-// フォームの入力値
-const message = ref<string>('')
-const status = ref<string>('')
+const newTodo = ref<string>('')
 
-// データを Firestore に追加
-const addData = async () => {
-  if (!message.value) return
-  try {
-    await addDoc(collection(db, 'messages'), {
-      text: message.value,
-      createdAt: serverTimestamp(),
-    })
-    status.value = 'データを追加しました！'
-    message.value = ''
-  } catch (e) {
-    console.error(e)
-    status.value = 'エラーが発生しました'
-  }
+const addTodo = async () => {
+  if (!newTodo.value.trim()) return
+  await todos.insert({
+    title: newTodo.value,
+    createdAt: new Date(),
+  })
+  newTodo.value = ''
+  console.log(newTodo.value)
 }
-
-
 </script>
 
 <template>
-  <form @submit.prevent="addData">
+  <form @submit.prevent="addTodo">
       <input
-        v-model="message"
+        v-model="newTodo"
         type="text"
         placeholder="メッセージを入力"
         class="border p-2 w-full mb-2"
@@ -40,7 +29,7 @@ const addData = async () => {
       >
         追加
       </button>
-    </form>
+  </form>
 </template>
 
 <style scoped>
