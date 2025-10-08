@@ -7,17 +7,17 @@ onMounted(async () => {
   console.log(test)
 })
 
+const todoList = computed(() => Array.from(todos.data.values()))
+
 </script>
 
 <template>
   <div class="p-4 max-w-md mx-auto">
-    <h2>Firestore データ一覧</h2>
-
-    <p>{{ todoList }}</p>
+    <h2>Firestore データ一覧</h2>    
 
     <ul>
-      <li v-for="todo in todoList" :key="todo.id" class="border-b py-2">
-        {{ todo.text }}
+      <li v-for="(todo, index) in todoList" :key="index" class="border-b py-2">
+        {{ todo.title }}
       </li>
     </ul>
 
