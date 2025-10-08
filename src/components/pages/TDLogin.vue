@@ -8,3 +8,8 @@ import TDMainMark from '@/components/TDMainMark/TDMainMark.vue';
     <button @click="$router.push('/home')">Homeに戻る</button>
     <TDMainMark src="../public/images/TDMainMark.svg"/>
 </template>
+
+<style lang="sass" scoped>
+h1
+  color: blue
+</style>
