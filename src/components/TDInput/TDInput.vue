@@ -34,7 +34,7 @@ const onInput = (e: Event) => {
     <div class="_input_group">
         <!-- メールアドレス入力 -->
         <!-- typeがmailのときのみ表示 -->
-        <div v-if="props.type === 'mail'" class="_input_form">
+        <div v-if="props.type === 'mail'" class="_input_form _input_mail_form">
             <label for="email" class="_email_label">メールアドレス</label>
             <input 
                 type="email"   
@@ -49,7 +49,7 @@ const onInput = (e: Event) => {
         
         <!-- パスワード入力 -->
         <!-- typeがpasswordのときのみ表示 -->
-        <div v-if="props.type === 'password'" class="_input_form">
+        <div v-if="props.type === 'password'" class="_input_form _input_password_form">
             <label for="password" class="_password_label">パスワード</label>
             <input 
                 type="password" 
@@ -63,13 +63,15 @@ const onInput = (e: Event) => {
             <button @click="visible = !visible" class="_eye_button">
                 <img 
                     v-if="!visible" 
-                    :src="props.openedEyeSrc"  
+                    :src="props.openedEyeSrc" 
                     alt="目が開いたアイコン" 
+                    class="_opened_eye_icon"
                 />
                 <img 
                     v-else 
                     :src="props.closedEyeSrc" 
                     alt="目が閉じたアイコン"
+                    class="_closed_eye_icon"
                 />
             </button>
         </div>
@@ -114,5 +116,24 @@ const onInput = (e: Event) => {
         padding: 11.5px 10px 11.5px 12px
     ._eye_button
         position: absolute
-        
+        right: 12px
+        top: 32.82px
+        background: transparent
+        border: none
+        outline: none
+        box-shadow: none
+        padding: 0
+        margin: 0
+        height: 18px
+
+    ._input_password_form
+        position: relative
+    ._opened_eye_icon
+        display: block
+        width: 18px
+        height: 15.74px
+    ._closed_eye_icon
+        display: block
+        width: 18px
+        height: 18.36px
 </style>
