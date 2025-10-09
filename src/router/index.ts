@@ -1,7 +1,7 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
-import TDLogin from '@/components/pages/TDLogin.vue'
-import TDHome from '@/components/pages/TDHome.vue'
+import TDLogin from '@/pages/TDLogin.vue'
+import TDHome from '@/pages/TDHome.vue'
 
 const routes = [
   { path: '/', redirect: '/login' },
