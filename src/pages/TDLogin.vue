@@ -40,14 +40,6 @@ const onClick = () => {
 h1
   color: blue
 ._login_button_container
-  display: grid
-  /* 左右は可変余白、中央はボタン領域（最小280px〜最大420pxなど好みで） */
-  grid-template-columns: minmax(16px, 1fr) minmax(280px, 420px) minmax(16px, 1fr)
-  align-items: center
-  min-height: 1px
-._login_button_container > * 
-  grid-column: 2 /* 真ん中のカラムに配置 */
-  justify-self: center
-
-
+  width: calc(100% - 60px) //60px分の余白を取る
+  margin: 0 auto // 中央寄せ
 </style>

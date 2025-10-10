@@ -10,9 +10,9 @@ const props = defineProps<LoginButtonProps>()
 </script>
 
 <template>
-  <div class="_login_button_container">
-    <button class="_login_button">
-      {{ props.buttonText }}
+  <div class="_login_button">
+    <button class="_login_button_wrapper">
+      <div class="_login_button_container">{{ props.buttonText }}</div>
       <img :src="props.src" alt="ログインボタンの画像" />
     </button>
   </div>
@@ -33,32 +33,33 @@ button
   appearance: none
   cursor: pointer
 ._login_button
-  display: grid
-  display: inline-flex
-  align-items: center
-  justify-content: center
-  gap: .5rem
-  width: 50%
-  height: 33%
-  min-width: 250px
-  padding: 14px 81px
-  gap: 10px
-  border-radius: 999px
+  display: grid    //gridレイアウトを使用
+  place-items: center //中央に配置
+  width: 100%
+  height: 50px
   background: #11ABC1
-  color: #FFFFFF
-  font-family: "Noto Sans JP"
   font-size: 16px
   font-style: normal
   font-weight: 500
   line-height: normal
   letter-spacing: 2.4px
+  border-radius: 999px
   &:active 
     background-color: #FFFFFF
     color: #11ABC1
     border-radius: 999px
     border: 1px solid #11ABC1
+._login_button_wrapper
+  display: grid
+  align-items: center
+  justify-content: center
+  grid-template-columns: max-content max-content
+  gap: 10px
 ._login_button_container
   display: grid
   place-items: center
   width: 100%
+  color: #FFFFFF
+  letter-spacing: 2.4px
+
 </style>
