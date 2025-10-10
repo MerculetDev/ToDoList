@@ -6,6 +6,7 @@ import TDInput from '@/components/TDInput/TDInput.vue';
 const email = ref('');
 const password = ref('');
 const visible = ref(false); 
+console.log(visible);
 </script>
 
 <template>
