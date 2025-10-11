@@ -7,6 +7,7 @@ interface LoginButtonProps {
 
 // props（親からのデータ）の型をpropsと定義
 const props = defineProps<LoginButtonProps>()
+console.log("test")
 </script>
 
 <template>
