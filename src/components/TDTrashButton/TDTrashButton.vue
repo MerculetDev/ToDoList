@@ -23,11 +23,9 @@ const onToggle = () => {
 </script>
 
 <template>
-  <button type="button" @click="onToggle" class="_trash_button">
+  <button type="button" @click="onToggle" class="_trash_button" :class="{ _delete_icon: deletemode }">
     <img
       :src="deletemode ? props.deleteIconSrc : props.normalIconSrc"
-      class="_trash_icon"
-      :class="{ _delete_icon: deletemode }"
       alt="ゴミ箱のアイコン"
     />
   </button>
@@ -35,6 +33,8 @@ const onToggle = () => {
 
 <style scoped lang="sass">
 ._trash_button
+  background: white
+  padding: 3px
 button
   margin: 0
   padding: 0
