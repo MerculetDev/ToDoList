@@ -1,13 +1,25 @@
 <script setup lang="ts">
 interface ErrorMessageProps {
   errorMessage?: string
+	error?: boolean
 }
-const props = defineProps<ErrorMessageProps>()
+const props=withDefaults(
+defineProps<ErrorMessageProps>(),
+{
+errorMessage: ""
+}
+)
 </script>
 
 <template>
   <div v-if="props.errorMessage" class="_error_message_container">
-    <div class="_error_message_text">{{ props.errorMessage }}</div>
+    <div 
+		  class="_error_message_text"
+			:class="{ 'is-empty': !props.errorMessage }"
+    	:aria-hidden="!props.errorMessage"    
+		>
+      {{ props.errorMessage  || "　" }}
+    </div>
   </div>
 </template>
 
@@ -30,4 +42,6 @@ const props = defineProps<ErrorMessageProps>()
 	place-items: center
 	justify-content: center
 	width: 100%
+.is-empty
+	visibility: hidden	
 </style>

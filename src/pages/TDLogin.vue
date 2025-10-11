@@ -17,10 +17,12 @@ const onClick = () => {
 
 <template>
     <h1>このページはTDLogin.vueです。</h1>
+    <button @click="$router.push('/test')">TestPage</button>
     <button @click="$router.push('/home')">Homeに戻る</button>
     <TDMainMark src="../public/images/TDMainMark.svg" />
     <div class="_error_message_container">
-      <TDErrorMessage errorMessage="ログインIDまたはパスワードに誤りがあります" :error="true"/>
+      <TDErrorMessage errorMessage="ログインIDまたはパスワードに誤りがあります" />
+      <TDErrorMessage errorMessage="" />
     </div>
     <TDInput v-model="email" type="mail" :error="true"/>
     <TDInput 
