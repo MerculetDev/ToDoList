@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import TDErrorMessage from "@/components/TDErrorMessage/TDErrorMessage.vue";
+import TDTrashButton from "@/components/TDTrashButton/TDTrashButton.vue";
 
 withDefaults(
   defineProps<{
@@ -19,6 +20,7 @@ const login = () => {
   if (email.value !== "" || pass.value !== "") error.value = "";
   return console.log("seikou");
 };
+
 console.log("test");
 </script>
 
@@ -30,6 +32,10 @@ console.log("test");
     <TDErrorMessage :errorMessage="error" />
     <input type="text" v-model="email" />
     <input type="text" v-model="pass" />
+    <TDTrashButton
+      normalIconSrc="/images/TDOffTrashButton.svg"
+      deleteIconSrc="/images/TDOnTrashButton.svg"
+    />
   </div>
 </template>
 
