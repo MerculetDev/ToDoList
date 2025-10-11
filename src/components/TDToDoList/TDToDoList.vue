@@ -4,29 +4,60 @@ import { onMounted } from "vue";
 interface ToDoItem {
   text: string;
   completed: boolean;
-  src: string;
 }
-const model = withDefaults(defineProps<ToDoItem>(), {});
+const model = defineModel<ToDoItem[]>({ default: [] });
 
-const addItems = () => {};
+const props = withDefaults(
+  defineProps<{
+    trashSrc?: string;
+  }>(),
+  {
+    trashSrc: "/images/trash.svg",
+  }
+);
+
+//新しいアイテムを作成する関数
+function newItem(): ToDoItem {
+  return { text: "", completed: false };
+}
 
 onMounted(() => {
-  console.log(model.src);
+  // 初回表示時：空なら1行だけ作る
+  if (model.value.length === 0) {
+    model.value.push(newItem());
+  }
 });
+
+//リスト追加の関数
+function addItem() {
+  model.value.push(newItem());
+}
+//リスト削除の関数
+function removeItem(index: number) {
+  model.value.splice(index, 1);
+}
 </script>
 
 <template>
   <div class="_todo_list">
-    <button @click="addItems">ボタン</button>
-    <div v-for="item in 5" :key="item" class="_todo_item">
-      <input type="checkbox" id="todo1" name="todo1" value="todo1" />
+    <button type="button" @click="addItem">ボタン</button>
+    <div v-for="(item, index) in model" :key="index" class="_todo_item">
+      <input
+        type="checkbox"
+        v-model="item.completed"
+        :id="`todo-${index}`"
+        :name="`todo-${index}`"
+      />
       <input
         type="text"
-        id="todo1_text"
-        name="todo1_text"
+        v-model="item.text"
+        :id="`todo-${index}_text`"
+        :name="`todo-${index}_text`"
         placeholder="タスクを入力"
       />
-      <img :src="src" alt="ゴミ箱アイコン" />
+      <button @click="removeItem(index)">
+        <img :src="props.trashSrc" alt="ゴミ箱アイコン" />
+      </button>
     </div>
   </div>
 </template>
