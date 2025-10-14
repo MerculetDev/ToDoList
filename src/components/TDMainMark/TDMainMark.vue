@@ -1,9 +1,14 @@
 <script setup lang="ts">
-defineProps<{ src : string }>()
-
+withDefaults(
+  defineProps<{
+    src: string;
+  }>(),
+  {
+    src: "/images/TDMainMark.svg",
+  }
+);
 </script>
 
 <template>
-    <img :src="src" alt="メインロゴ" />
+  <img :src="src" alt="メインロゴ" />
 </template>
-
