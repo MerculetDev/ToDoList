@@ -18,12 +18,17 @@ const addToDoList = () => {
     completed: false,
   });
 };
+import TDTrashButton from "@/components/TDTrashButton/TDTrashButton.vue";
 </script>
 
 <template>
   <h1>このページはTDHome.vueです。</h1>
   <button @click="$router.push('/login')">Logoutする</button>
   <TDMainMark src="images/TDMainMark.svg" />
+  <TDTrashButton
+    normalIconSrc="/images/TDOffTrashButton.svg"
+    deleteIconSrc="/images/TDOnTrashButton.svg"
+  />
   <button @click="addToDoList">ToDoList追加</button>
   <div class="_todo_list_container">
     <TDToDoList

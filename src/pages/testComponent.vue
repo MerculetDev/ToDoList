@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import TDErrorMessage from "@/components/TDErrorMessage/TDErrorMessage.vue";
 import TDToDoList from "@/components/TDToDoList/TDToDoList.vue";
+import TDTrashButton from "@/components/TDTrashButton/TDTrashButton.vue";
 
 withDefaults(
   defineProps<{
@@ -42,6 +43,10 @@ const toDoList = ref<ToDoItem[]>([]);
     <h1>このページはTDTestComponent.vueです。</h1>
     <button @click="$router.push('/login')">Logoutする</button>
     <button @click="login">login</button>
+    <TDTrashButton
+      normalIconSrc="/images/TDOffTrashButton.svg"
+      deleteIconSrc="/images/TDOnTrashButton.svg"
+    />
     <TDErrorMessage :errorMessage="error" />
     <input type="text" v-model="email" />
     <input type="text" v-model="pass" />
