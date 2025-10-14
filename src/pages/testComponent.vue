@@ -3,6 +3,7 @@ import { ref } from "vue";
 import TDErrorMessage from "@/components/TDErrorMessage/TDErrorMessage.vue";
 import TDToDoList from "@/components/TDToDoList/TDToDoList.vue";
 import TDTrashButton from "@/components/TDTrashButton/TDTrashButton.vue";
+import TDAddButton from "@/components/TDAddButton/TDAddButton.vue";
 
 withDefaults(
   defineProps<{
@@ -61,6 +62,11 @@ const toDoList = ref<ToDoItem[]>([]);
         :deleteMode="deleteMode"
       />
     </div>
+    <TDAddButton
+      src="images/TDAddButton.svg"
+      :deleteMode="deleteMode"
+      @click="addToDoList"
+    />
   </div>
 </template>
 
