@@ -37,7 +37,7 @@ const data = defineProps<InputData>();
     >
       <label for="password" class="_password_label">パスワード</label>
       <input
-        :type="visible ? 'text' : 'password'"
+        type="password"
         id="password"
         name="password"
         v-model="value"
@@ -86,7 +86,6 @@ button
   justify-content: center
   grid-template-columns: 1fr
   width: 100%
-  font-family: 'Noto Sans JP', sans-serif
   font-weight: 400
   color: #666666
 ._input_form

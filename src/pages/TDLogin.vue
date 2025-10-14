@@ -51,8 +51,8 @@ const onClick = () => {
 </template>
 
 <style lang="sass" scoped>
-h1
-  color: blue
+.body
+  font-family: 'Noto Sans JP', sans-serif
 ._main_mark_container
   display: grid
   align-items: center
