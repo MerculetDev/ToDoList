@@ -70,7 +70,7 @@ function toggle(index: number) {
         :src="props.trashSrc"
         alt="ゴミ箱アイコン"
         class="_trash_icon"
-        :class="{ 'is-hidden': props.deleteMode }"
+        v-if="!props.deleteMode"
       />
     </button>
   </div>
@@ -117,7 +117,4 @@ button
   box-sizing: border-box
   &.is-completed
     color: #BBBBBB
-._trash_icon
-  &.is-hidden
-    display: none
 </style>
