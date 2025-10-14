@@ -1,17 +1,16 @@
 <script setup lang="ts">
+const value = defineModel<string>({ required: true });
 
-const value = defineModel<string>({ required: true })
-
-const visible = defineModel<boolean>("visible", { default: false })
+const visible = defineModel<boolean>("visible", { default: false });
 
 interface InputData {
-  error?: boolean
-  type: "mail" | "password"
-  openedEyeSrc?: string
-  closedEyeSrc?: string
+  error?: boolean;
+  type: "mail" | "password";
+  openedEyeSrc?: string;
+  closedEyeSrc?: string;
 }
 
-const data = defineProps<InputData>()
+const data = defineProps<InputData>();
 </script>
 
 <template>
@@ -82,40 +81,42 @@ button
   appearance: none
   cursor: pointer
 ._input_group
+  display: grid
+  align-items: center
+  justify-content: center
+  grid-template-columns: 1fr
+  width: 100%
   font-family: 'Noto Sans JP', sans-serif
   font-weight: 400
   color: #666666
-  display: flex
-  flex-direction: column
+._input_form
+  display: grid
   align-items: center
   justify-content: center
-._input_form
-  display: flex
-  flex-direction: column
-  align-items: flex-start
-  justify-content: center
+  grid-template-columns: 1fr
   margin-bottom: 24px
 ._input_group_text
-  width: 291px
-  height: 17px
+  display: grid
+  align-items: center
+  justify-content: center
   border-radius: 3px
   border: 1px solid #bbbbbb
   font-size: 14px
   color: #666666
 ._email_label
-  width: 103px
+  width: 100%
   height: 17px
   font-size: 14px
   margin-bottom: 5px
 ._password_label
-  width: 73px
+  width: 100%
   height: 17px
   font-size: 14px
   margin-bottom: 5px
 ._email_input
   padding: 11.5px 12px 11.5px 12px
 ._password_input
-  padding: 11.5px 10px 11.5px 12px
+  padding: 11.5px 12px 11.5px 12px
   color: #666
   font-family: "Noto Sans JP"
   font-size: 0.875rem

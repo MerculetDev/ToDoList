@@ -24,15 +24,17 @@ const onClick = () => {
     <TDErrorMessage errorMessage="ログインIDまたはパスワードに誤りがあります" />
     <TDErrorMessage errorMessage="" />
   </div>
-  <TDInput v-model="email" type="mail" :error="true" />
-  <TDInput
-    v-model="password"
-    v-model:visible="visible"
-    type="password"
-    openedEyeSrc="/images/TDInputOpenedEye.svg"
-    closedEyeSrc="/images/TDInputClosedEye.svg"
-    :error="true"
-  />
+  <div class="_input_container">
+    <TDInput v-model="email" type="mail" :error="true" />
+    <TDInput
+      v-model="password"
+      v-model:visible="visible"
+      type="password"
+      openedEyeSrc="/images/TDInputOpenedEye.svg"
+      closedEyeSrc="/images/TDInputClosedEye.svg"
+      :error="true"
+    />
+  </div>
   <div class="_login_button_container">
     <TDLoginButton
       :buttonText="'ログイン'"
@@ -52,4 +54,7 @@ h1
   width: calc(100% - 110px) //110px分の余白を取る
   margin: 0 auto // 中央寄せ
   margin-bottom: 24px
+._input_container
+  width: calc(100% - 60px) //60px分の余白を取る
+  margin: 0 auto 98px auto // 中央寄せ
 </style>
