@@ -4,6 +4,7 @@ import TDErrorMessage from "@/components/TDErrorMessage/TDErrorMessage.vue";
 import TDToDoList from "@/components/TDToDoList/TDToDoList.vue";
 import TDTrashButton from "@/components/TDTrashButton/TDTrashButton.vue";
 import TDAddButton from "@/components/TDAddButton/TDAddButton.vue";
+import TDInput from "@/components/TDInput/TDInput.vue";
 
 withDefaults(
   defineProps<{
@@ -17,6 +18,9 @@ const email = ref("");
 const pass = ref("");
 const error = ref("");
 const deleteMode = ref(false);
+const password = ref("");
+
+const visible = ref(false);
 const login = () => {
   if (!email.value || !pass.value)
     return (error.value = "ログインIDまたはパスワードに誤りがあります");
@@ -37,6 +41,13 @@ type ToDoItem = {
 
 // ToDoList.vueからのToDoリストのデータを保持するref
 const toDoList = ref<ToDoItem[]>([]);
+
+const onClick = () => {
+  if (!email.value || !password.value)
+    return (error.value = "ログインIDまたはパスワードに誤りがあります");
+  else return;
+  console.log("ログイン成功");
+};
 </script>
 
 <template>
@@ -67,6 +78,23 @@ const toDoList = ref<ToDoItem[]>([]);
       :deleteMode="deleteMode"
       @click="addToDoList"
     />
+    <div class="_input_container">
+      <TDInput v-model="email" type="mail" />
+      <TDInput
+        v-model="password"
+        v-model:visible="visible"
+        type="password"
+        openedEyeSrc="/images/TDInputOpenedEye.svg"
+        closedEyeSrc="/images/TDInputClosedEye.svg"
+      />
+    </div>
+    <div class="_login_button_container">
+      <TDLoginButton
+        :buttonText="'ログイン'"
+        src="/images/TDLoginButton.svg"
+        @click="onClick"
+      />
+    </div>
   </div>
 </template>
 

@@ -7,32 +7,34 @@ import TDErrorMessage from "@/components/TDErrorMessage/TDErrorMessage.vue";
 
 const email = ref("");
 const password = ref("");
+const error = ref("");
 const visible = ref(false);
 console.log(visible);
 
 const onClick = () => {
-  console.log("ログインボタンがクリックされました");
+  if (!email.value || !password.value)
+    return (error.value = "ログインIDまたはパスワードに誤りがあります");
+  else console.log("ログイン成功");
 };
 </script>
 
 <template>
-  <h1>このページはTDLogin.vueです。</h1>
-  <button @click="$router.push('/test')">TestPage</button>
-  <button @click="$router.push('/home')">Homeに戻る</button>
-  <TDMainMark src="/images/TDMainMark.svg" />
+  <div class="_main_mark_container">
+    <TDMainMark src="/images/TDMainMark.svg" />
+  </div>
   <div class="_error_message_container">
-    <TDErrorMessage errorMessage="ログインIDまたはパスワードに誤りがあります" />
-    <TDErrorMessage errorMessage="" />
+    <TDErrorMessage :errorMessage="error" :error="!!error" />
   </div>
   <div class="_input_container">
-    <TDInput v-model="email" type="mail" :error="true" />
+    <TDInput v-model="email" type="mail" :error="!!error" />
     <TDInput
       v-model="password"
       v-model:visible="visible"
       type="password"
       openedEyeSrc="/images/TDInputOpenedEye.svg"
       closedEyeSrc="/images/TDInputClosedEye.svg"
-      :error="true"
+      :class="{ 'is-visible': visible }"
+      :error="!!error"
     />
   </div>
   <div class="_login_button_container">
@@ -42,19 +44,29 @@ const onClick = () => {
       @click="onClick"
     />
   </div>
+
+  // テスト用ボタン
+  <button @click="$router.push('/test')">TestPage</button>
+  <button @click="$router.push('/home')">Homeに戻る</button>
 </template>
 
 <style lang="sass" scoped>
-h1
-  color: blue
-._login_button_container
-  width: calc(100% - 60px) //60px分の余白を取る
-  margin: 0 auto // 中央寄せ
+.body
+  //font-family: 'Noto Sans JP', sans-serif
+._main_mark_container
+  display: grid
+  align-items: center
+  justify-content: center
+  width: calc(100% - 260px)
+  margin: 130px auto 42px auto
 ._error_message_container
-  width: calc(100% - 110px) //110px分の余白を取る
-  margin: 0 auto // 中央寄せ
+  width: calc(100% - 110px)
+  margin: 0 auto
   margin-bottom: 24px
+._login_button_container
+  width: calc(100% - 60px)
+  margin: 0 auto
 ._input_container
-  width: calc(100% - 60px) //60px分の余白を取る
-  margin: 0 auto 98px auto // 中央寄せ
+  width: calc(100% - 60px)
+  margin: 0 auto 98px auto
 </style>
