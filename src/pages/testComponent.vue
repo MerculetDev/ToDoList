@@ -6,14 +6,6 @@ import TDTrashButton from "@/components/TDTrashButton/TDTrashButton.vue";
 import TDAddButton from "@/components/TDAddButton/TDAddButton.vue";
 import TDInput from "@/components/TDInput/TDInput.vue";
 
-withDefaults(
-  defineProps<{
-    test?: string;
-  }>(),
-  {
-    test: "ボタン",
-  }
-);
 const email = ref("");
 const pass = ref("");
 const error = ref("");
@@ -58,6 +50,7 @@ const onClick = () => {
     <TDTrashButton
       normalIconSrc="/images/TDOffTrashButton.svg"
       deleteIconSrc="/images/TDOnTrashButton.svg"
+      @click="deleteMode = !deleteMode"
     />
     <TDErrorMessage :errorMessage="error" />
     <input type="text" v-model="email" />

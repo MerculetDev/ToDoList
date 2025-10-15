@@ -22,7 +22,7 @@ const emit = defineEmits<{
       alt="追加ボタン"
       class="_add_button"
       @click="emit('click')"
-      v-if="deleteMode"
+      v-if="!deleteMode"
     />
   </div>
 </template>
