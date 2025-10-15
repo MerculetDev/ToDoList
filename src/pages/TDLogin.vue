@@ -14,8 +14,7 @@ console.log(visible);
 const onClick = () => {
   if (!email.value || !password.value)
     return (error.value = "ログインIDまたはパスワードに誤りがあります");
-  else return;
-  ((error.value = ""), console.log("ログイン成功"));
+  else console.log("ログイン成功");
 };
 </script>
 
@@ -24,17 +23,18 @@ const onClick = () => {
     <TDMainMark src="/images/TDMainMark.svg" />
   </div>
   <div class="_error_message_container">
-    <TDErrorMessage :errorMessage="error" />
+    <TDErrorMessage :errorMessage="error" :error="!!error" />
   </div>
   <div class="_input_container">
-    <TDInput v-model="email" type="mail" :error="true" />
+    <TDInput v-model="email" type="mail" :error="!!error" />
     <TDInput
       v-model="password"
       v-model:visible="visible"
       type="password"
       openedEyeSrc="/images/TDInputOpenedEye.svg"
       closedEyeSrc="/images/TDInputClosedEye.svg"
-      :error="true"
+      :class="{ 'is-visible': visible }"
+      :error="!!error"
     />
   </div>
   <div class="_login_button_container">
@@ -52,7 +52,7 @@ const onClick = () => {
 
 <style lang="sass" scoped>
 .body
-  font-family: 'Noto Sans JP', sans-serif
+  //font-family: 'Noto Sans JP', sans-serif
 ._main_mark_container
   display: grid
   align-items: center

@@ -37,7 +37,7 @@ const data = defineProps<InputData>();
     >
       <label for="password" class="_password_label">パスワード</label>
       <input
-        type="password"
+        :type="visible ? 'text' : 'password'"
         id="password"
         name="password"
         v-model="value"
@@ -93,6 +93,7 @@ button
   align-items: center
   justify-content: center
   grid-template-columns: 1fr
+  font-family: "Noto Sans JP"
   margin-bottom: 24px
 ._input_group_text
   display: grid
@@ -116,9 +117,9 @@ button
   padding: 11.5px 12px 11.5px 12px
 ._password_input
   padding: 11.5px 12px 11.5px 12px
+  max-height: 16px
   color: #666
   font-family: "Noto Sans JP"
-  font-size: 0.875rem
   font-style: normal
   font-weight: 400
   line-height: normal
@@ -133,7 +134,7 @@ button
   box-shadow: none
   padding: 0
   margin: 0
-  height: 18px
+  height: 10px
 ._input_password_form
   position: relative
 ._opened_eye_icon
