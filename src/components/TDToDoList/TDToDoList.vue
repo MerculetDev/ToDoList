@@ -70,13 +70,16 @@ function toggle(index: number) {
         :src="props.trashSrc"
         alt="ゴミ箱アイコン"
         class="_trash_icon"
-        v-if="!props.deleteMode"
+        v-if="props.deleteMode"
       />
     </button>
   </div>
 </template>
 
 <style scoped lang="sass">
+body
+  margin: 0
+  padding: 0
 button
   margin: 0
   padding: 0
@@ -117,4 +120,7 @@ button
   box-sizing: border-box
   &.is-completed
     color: #BBBBBB
+._trash_icon
+  width: 18px
+  height: 20px
 </style>
