@@ -16,9 +16,8 @@ const visible = ref(false);
 console.log(visible);
 //ログイン機能
 const router = useRouter();
-const route = useRoute();
 
-const loginCheck = async () => {
+const login = async (): Promise<void> => {
   error.value = "";
   try {
     await signInWithEmailAndPassword(auth, email.value, password.value);
@@ -29,6 +28,10 @@ const loginCheck = async () => {
   } finally {
   }
 };
+
+//User { uid: "...", email: "...", ... } → ログイン中
+//null → ログアウト中
+console.log("現在のログイン状態:", auth.currentUser);
 </script>
 
 <template>
@@ -38,7 +41,7 @@ const loginCheck = async () => {
   <div class="_error_message_container">
     <TDErrorMessage :errorMessage="error" :error="!!error" />
   </div>
-  <form @submit.prevent="loginCheck"></form>
+  <form @submit.prevent="login"></form>
   <div class="_input_container">
     <TDInput v-model="email" type="mail" :error="!!error" />
     <TDInput
@@ -55,7 +58,7 @@ const loginCheck = async () => {
     <TDLoginButton
       :buttonText="'ログイン'"
       src="/images/TDLoginButton.svg"
-      @click="loginCheck"
+      @click="login"
     />
   </div>
 

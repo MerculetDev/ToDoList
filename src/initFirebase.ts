@@ -1,10 +1,6 @@
-import { getFirestore } from "@firebase/firestore";
 import { initializeApp } from "firebase/app";
-import { getAuth } from "@firebase/auth";
-import type { Auth } from "@firebase/auth";
-import type { Firestore } from "@firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore, type Firestore } from "firebase/firestore";
+import { getAuth, type Auth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {

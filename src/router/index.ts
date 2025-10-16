@@ -4,6 +4,7 @@ import TDHome from "@/pages/TDHome.vue";
 import TestComponent from "@/pages/testComponent.vue";
 import MagnetarCheck from "@/components/testpages/TDMagnetarConnectCheck.vue";
 import { auth } from "@/initFirebase";
+import { onAuthStateChanged } from "@firebase/auth";
 
 const routes = [
   { path: "/", redirect: "/login" },
@@ -23,8 +24,23 @@ const router = createRouter({
   routes,
 });
 
+let authReady = false;
+
+onAuthStateChanged(auth, () => {
+  authReady = true;
+});
+
 //ページが切り替わる直前に、毎回実行
 router.beforeEach((to) => {
+  if (!authReady) {
+    return new Promise((resolve) => {
+      const unsubscribe = onAuthStateChanged(auth, () => {
+        unsubscribe();
+        resolve(to);
+      });
+    });
+  }
+
   const isAuthenticated = !!auth.currentUser; // ユーザーがログインしているか確認
 
   //meta=今回であれば/homeにログインしていないユーザーがアクセスしようとした場合

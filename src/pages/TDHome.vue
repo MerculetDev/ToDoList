@@ -4,6 +4,8 @@ import TDMainMark from "@/components/TDMainMark/TDMainMark.vue";
 import TDToDoList from "@/components/TDToDoList/TDToDoList.vue";
 import TDAddButton from "@/components/TDAddButton/TDAddButton.vue";
 
+import { auth } from "@/initFirebase";
+
 // ToDoList.vueからのToDoアイテムの型定義
 type ToDoItem = {
   text: string;
@@ -22,6 +24,8 @@ const addToDoList = () => {
   });
 };
 import TDTrashButton from "@/components/TDTrashButton/TDTrashButton.vue";
+
+console.log("現在のログイン状態:", auth.currentUser);
 </script>
 
 <template>
