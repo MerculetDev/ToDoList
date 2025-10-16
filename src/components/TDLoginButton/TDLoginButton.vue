@@ -1,13 +1,12 @@
 <script setup lang="ts">
 //props（親からのデータ）の型を定義
 interface LoginButtonProps {
-  buttonText: string
-  src: string
+  buttonText: string;
+  src: string;
 }
 
 // props（親からのデータ）の型をpropsと定義
-const props = defineProps<LoginButtonProps>()
-console.log("test")
+const props = defineProps<LoginButtonProps>();
 </script>
 
 <template>
@@ -17,8 +16,7 @@ console.log("test")
       <div
         class="_login_button_icon"
         :style="{ '--icon-url': `url(${props.src})` }"
-      >
-      </div>
+      ></div>
     </button>
   </div>
 </template>
@@ -72,7 +70,7 @@ button
   width: 16px
   height: 16px
   background-color: #fff        /* 通常色（ここが“色”） */
-  -webkit-mask-image: var(--icon-url) 
+  -webkit-mask-image: var(--icon-url)
   mask-image: var(--icon-url)
   -webkit-mask-repeat: no-repeat
   mask-repeat: no-repeat

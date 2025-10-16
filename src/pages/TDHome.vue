@@ -3,6 +3,9 @@ import { ref } from "vue";
 import TDMainMark from "@/components/TDMainMark/TDMainMark.vue";
 import TDToDoList from "@/components/TDToDoList/TDToDoList.vue";
 import TDAddButton from "@/components/TDAddButton/TDAddButton.vue";
+import { auth } from "@/initFirebase";
+import { useRouter } from "vue-router";
+import { signOut } from "firebase/auth";
 
 // ToDoList.vueからのToDoアイテムの型定義
 type ToDoItem = {
@@ -22,6 +25,20 @@ const addToDoList = () => {
   });
 };
 import TDTrashButton from "@/components/TDTrashButton/TDTrashButton.vue";
+
+console.log("現在のログイン状態:", auth.currentUser);
+
+//検証用のログアウトボタン
+const router = useRouter();
+const logout = async (): Promise<void> => {
+  try {
+    await signOut(auth);
+    router.push("/login");
+    console.log("ログアウトしました");
+  } catch (e: any) {
+    console.error("ログアウトに失敗しました:", e);
+  }
+};
 </script>
 
 <template>
@@ -49,7 +66,7 @@ import TDTrashButton from "@/components/TDTrashButton/TDTrashButton.vue";
     :deleteMode="deleteMode"
     @click="addToDoList"
   />
-  <button @click="$router.push('/login')">Logoutする</button>
+  <button @click="logout">Logoutする</button>
 </template>
 
 <style scoped lang="sass">
