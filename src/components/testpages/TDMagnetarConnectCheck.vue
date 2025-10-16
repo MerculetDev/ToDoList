@@ -1,41 +1,33 @@
 <script setup lang="ts">
-import { onMounted, computed } from "vue";
+import { onMounted, onUnmounted, computed } from "vue";
 import { TDLists } from "@/models/TDLists";
 
-// 1) fetchがある環境だけ1回呼ぶ（無ければ何もしない）
+//コンポーネントが開いた際、streamでリアクティブに更新
 onMounted(async () => {
-  await (TDLists as any).fetch?.();
+  await TDLists.stream();
 });
 
-// 2) Magnetarの素のdataをそのまま参照（ref/非ref 両対応に修正）
-const raw = computed(() => {
-  const r = (TDLists as any).data;
-  return r?.value ?? r;
+//コンポーネントが閉じた際、streamを閉じる
+onUnmounted(() => {
+  TDLists.closeStream();
 });
 
-// 3) 画面用に“必ず配列化”
-const list = computed(() => {
-  const d = raw.value;
-  if (!d) return [];
-  if (Array.isArray(d)) return d;
-  // MagnetarがMap形式の際、配列に変換
-  // 例）Map { "UID001" => {...}, "UID002" => {...} } → [ {...}, {...} ]
-  if (d instanceof Map) return Array.from(d.values());
+const todos = computed(() => {
+  //Firestoreのデータを新しい順に並び替え
+  const data = TDLists.orderBy("createdAt", "desc").data;
+  // Mapオブジェクトを配列に変換
+  if (data instanceof Map) return Array.from(data.values());
   // オブジェクト形式の際、配列に変換
-  // 例）{ UID001: {...}, UID002: {...} } → [ {...}, {...} ]
-  if (typeof d === "object") return Object.values(d);
+  if (Array.isArray(data)) return data;
   return [];
 });
 </script>
 
 <template>
-  <p>TDToDoListUncheckedIcon</p>
-
-  <!-- 生の形を一旦表示（確認用。出たら消してOK） -->
-  <pre style="white-space: pre-wrap">{{ raw }}</pre>
+  <p>ページ確認用テキスト</p>
 
   <ul>
-    <li v-for="(i, idx) in list" :key="i.UID ?? idx">
+    <li v-for="(i, idx) in todos" :key="i.UID ?? idx">
       {{ i.text }} / {{ i.completed ? "✅" : "⬜︎" }} / {{ i.UID }}
     </li>
   </ul>
