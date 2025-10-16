@@ -7,7 +7,7 @@ import TDErrorMessage from "@/components/TDErrorMessage/TDErrorMessage.vue";
 //ログイン機能
 import { auth } from "@/initFirebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 
 const email = ref("");
 const password = ref("");
