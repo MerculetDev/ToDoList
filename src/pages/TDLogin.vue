@@ -4,17 +4,30 @@ import TDMainMark from "@/components/TDMainMark/TDMainMark.vue";
 import TDInput from "@/components/TDInput/TDInput.vue";
 import TDLoginButton from "@/components/TDLoginButton/TDLoginButton.vue";
 import TDErrorMessage from "@/components/TDErrorMessage/TDErrorMessage.vue";
+//ログイン機能
+import { auth } from "@/initFirebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter, useRoute } from "vue-router";
 
 const email = ref("");
 const password = ref("");
 const error = ref("");
 const visible = ref(false);
 console.log(visible);
+//ログイン機能
+const router = useRouter();
+const route = useRoute();
 
-const onClick = () => {
-  if (!email.value || !password.value)
-    return (error.value = "ログインIDまたはパスワードに誤りがあります");
-  else console.log("ログイン成功");
+const loginCheck = async () => {
+  error.value = "";
+  try {
+    await signInWithEmailAndPassword(auth, email.value, password.value);
+    //ログイン成功後、Homeに遷移
+    router.push("/home");
+  } catch (e: any) {
+    error.value = "ログインIDまたはパスワードに誤りがあります";
+  } finally {
+  }
 };
 </script>
 
@@ -25,6 +38,7 @@ const onClick = () => {
   <div class="_error_message_container">
     <TDErrorMessage :errorMessage="error" :error="!!error" />
   </div>
+  <form @submit.prevent="loginCheck"></form>
   <div class="_input_container">
     <TDInput v-model="email" type="mail" :error="!!error" />
     <TDInput
@@ -41,7 +55,7 @@ const onClick = () => {
     <TDLoginButton
       :buttonText="'ログイン'"
       src="/images/TDLoginButton.svg"
-      @click="onClick"
+      @click="loginCheck"
     />
   </div>
 
