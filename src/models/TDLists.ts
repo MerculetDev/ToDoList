@@ -40,6 +40,14 @@ export async function addTodo(item: ToDoItem) {
   });
 }
 
+// textの入力値が変更された際の更新処理
+export async function updateText(id: string, text: string) {
+  await TDLists.doc(id).merge({
+    text,
+    updatedAt: new Date(),
+  });
+}
+
 // チェックボックス完了・未完了を切り替え
 export async function toggleTodo(id: string, completed: boolean) {
   // 同一のIDを持つドキュメントのcompletedを変更
