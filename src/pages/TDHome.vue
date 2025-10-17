@@ -4,6 +4,7 @@ import TDMainMark from "@/components/TDMainMark/TDMainMark.vue";
 import TDToDoList from "@/components/TDToDoList/TDToDoList.vue";
 import TDAddButton from "@/components/TDAddButton/TDAddButton.vue";
 import TDTrashButton from "@/components/TDTrashButton/TDTrashButton.vue";
+import TDToDoListSpinner from "@/components/TDToDoListSpinner/TDToDoListSpinner.vue";
 import { auth } from "@/initFirebase";
 import { useRouter } from "vue-router";
 import { signOut } from "firebase/auth";
@@ -24,6 +25,7 @@ type ToDoItem = {
 
 const model = defineModel<ToDoItem[]>({ default: [] });
 const deleteMode = ref<boolean>(false);
+const loading = ref<boolean>(false);
 
 // streamで取得したデータをリアクティブに扱う
 onMounted(async () => {
@@ -41,8 +43,7 @@ const raw = computed(() =>
     text: x.text,
     completed: x.completed,
   }))
-)
-
+);
 
 // const items = computed<ToDoItem[]>(() => {
 //   const d = raw.value;
@@ -111,7 +112,9 @@ const onBlur = async (id: string) => {
   focusSnap.value.delete(id);
 
   if (before !== after) {
+    loading.value = true;
     await updateText(id, after);
+    loading.value = false;
   }
 };
 
@@ -131,36 +134,44 @@ const logout = async (): Promise<void> => {
 </script>
 
 <template>
-  {{ raw }}
-  <div class="_header">
-    <div class="_header_icon">
-      <TDMainMark src="images/TDMainMark.svg" />
+  <div v-if="loading" class="_loading_spinner">
+    <TDToDoListSpinner
+      src="images/TDToDoListLoadingSpinner.svg"
+      alt="読み込み中のスピナー"
+    />
+  </div>
+
+  <div v-else>
+    <div class="_header">
+      <div class="_header_icon">
+        <TDMainMark src="images/TDMainMark.svg" />
+      </div>
+      <TDTrashButton
+        normalIconSrc="/images/TDOffTrashButton.svg"
+        deleteIconSrc="/images/TDOnTrashButton.svg"
+        @click="deleteMode = !deleteMode"
+      />
     </div>
-    <TDTrashButton
-      normalIconSrc="/images/TDOffTrashButton.svg"
-      deleteIconSrc="/images/TDOnTrashButton.svg"
-      @click="deleteMode = !deleteMode"
-    />
-  </div>
-  <div class="_todo_list_container">
-    <TDToDoList
-      trashSrc="images/TDToDoListIcon.svg"
-      checkedSrc="images/TDToDoListCheckedIcon.svg"
-      uncheckedSrc="images/TDToDoListUncheckedIcon.svg"
-      v-model="model"
+    <div class="_todo_list_container">
+      <TDToDoList
+        trashSrc="images/TDToDoListIcon.svg"
+        checkedSrc="images/TDToDoListCheckedIcon.svg"
+        uncheckedSrc="images/TDToDoListUncheckedIcon.svg"
+        v-model="model"
+        :deleteMode="deleteMode"
+        @delete="removeItem"
+        @toggle="toggleCompleted"
+        @focus="onFocus"
+        @blur="onBlur"
+      />
+    </div>
+    <TDAddButton
+      src="images/TDAddButton.svg"
       :deleteMode="deleteMode"
-      @delete="removeItem"
-      @toggle="toggleCompleted"
-      @focus="onFocus"
-      @blur="onBlur"
+      @click="addToDoList"
     />
+    <button @click="logout">Logoutする</button>
   </div>
-  <TDAddButton
-    src="images/TDAddButton.svg"
-    :deleteMode="deleteMode"
-    @click="addToDoList"
-  />
-  <button @click="logout">Logoutする</button>
 </template>
 
 <style scoped lang="sass">
@@ -187,4 +198,8 @@ body
 ._todo_list_container
   width: calc(100% - 48px) //48px分の余白を取る
   margin: 4px auto // 中央寄せ
+._loading_spinner
+  display: grid
+  place-items: center
+  height: 100vh
 </style>
