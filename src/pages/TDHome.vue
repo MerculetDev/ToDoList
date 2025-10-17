@@ -35,28 +35,35 @@ onUnmounted(() => {
   TDLists.closeStream();
 });
 
-const raw = computed(() => (TDLists as any).data);
+const raw = computed(() =>
+  Array.from(TDLists.data.values()).map((x) => ({
+    id: x.id,
+    text: x.text,
+    completed: x.completed,
+  }))
+)
 
-const items = computed<ToDoItem[]>(() => {
-  const d = raw.value;
-  const arr = !d
-    ? []
-    : Array.isArray(d)
-      ? d
-      : d instanceof Map
-        ? Array.from(d.values())
-        : typeof d === "object"
-          ? Object.values(d)
-          : [];
-  return arr.map((x: any) => ({
-    id: String(x.id),
-    text: String(x.text ?? ""),
-    completed: !!x.completed,
-  }));
-});
+
+// const items = computed<ToDoItem[]>(() => {
+//   const d = raw.value;
+//   const arr = !d
+//     ? []
+//     : Array.isArray(d)
+//       ? d
+//       : d instanceof Map
+//         ? Array.from(d.values())
+//         : typeof d === "object"
+//           ? Object.values(d)
+//           : [];
+//   return arr.map((x: any) => ({
+//     id: String(x.id),
+//     text: String(x.text ?? ""),
+//     completed: !!x.completed,
+//   }));
+// });
 
 watch(
-  items,
+  raw,
   (v) => {
     model.value = v;
   },
@@ -124,6 +131,7 @@ const logout = async (): Promise<void> => {
 </script>
 
 <template>
+  {{ raw }}
   <div class="_header">
     <div class="_header_icon">
       <TDMainMark src="images/TDMainMark.svg" />
