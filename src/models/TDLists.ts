@@ -1,6 +1,5 @@
 import { magnetar } from "@/initMagnetar";
 import { auth } from "@/initFirebase";
-import { useRouter } from "vue-router";
 import { genFirebaseRandomId } from "@codelic/datagen";
 
 // Firestoreのドキュメントの型を定義
@@ -29,9 +28,6 @@ export type ToDoItem = {
 export async function addTodo(item: ToDoItem) {
   // 現在のユーザーのUIDを取得
   const uid = auth.currentUser?.uid;
-  const router = useRouter();
-  //未ログインの際、ログインページにリダイレクト
-  if (!uid) router.push("/login");
 
   // 新しいToDoアイテムを追加
   await TDLists.insert({
