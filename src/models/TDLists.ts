@@ -1,38 +1,59 @@
-import { magnetar } from "../initMagnetar.ts";
-import { Timestamp } from "firebase/firestore";
+import { magnetar } from "@/initMagnetar";
+import { auth } from "@/initFirebase";
+import { useRouter } from "vue-router";
+import { genFirebaseRandomId } from "@codelic/datagen";
 
-export interface TDList {
-  UID: string;
-  completed: boolean;
-  createdAt: Date | Timestamp;
-  updatedAt: Date | Timestamp;
+// Firestoreのドキュメントの型を定義
+export type TDList = {
+  id: string;
+  UID: string | undefined;
   text: string;
-}
+  completed: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 // Firestoreのコレクションを定義
-export const TDLists = magnetar.collection<TDList>("TDLists", {
-  modifyReadResponseOn: {
-    added: (data) => {
-      // FirestoreのTimestampをDateに変換
-      if (data.createdAt instanceof Timestamp) {
-        data.createdAt = data.createdAt.toDate();
-      }
-      // FirestoreのTimestampをDateに変換
-      if (data.updatedAt instanceof Timestamp) {
-        data.updatedAt = data.updatedAt.toDate();
-      }
-      return data;
-    },
-    modified: (data) => {
-      // FirestoreのTimestampをDateに変換
-      if (data.createdAt instanceof Timestamp) {
-        data.createdAt = data.createdAt.toDate();
-      }
-      // FirestoreのTimestampをDateに変換
-      if (data.updatedAt instanceof Timestamp) {
-        data.updatedAt = data.updatedAt.toDate();
-      }
-      return data;
-    },
-  },
-});
+export const TDLists = magnetar.collection<TDList>("TDLists");
+
+// 新しいToDoアイテムを追加
+export type ToDoItem = {
+  id: string;
+  UID: string | undefined;
+  text: string;
+  completed: boolean;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+};
+
+export async function addTodo(item: ToDoItem) {
+  // 現在のユーザーのUIDを取得
+  const uid = auth.currentUser?.uid;
+  const router = useRouter();
+  //未ログインの際、ログインページにリダイレクト
+  if (!uid) router.push("/login");
+
+  // 新しいToDoアイテムを追加
+  await TDLists.insert({
+    id: genFirebaseRandomId(),
+    UID: uid,
+    text: item.text,
+    completed: item.completed,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
+}
+
+// チェックボックス完了・未完了を切り替え
+export async function toggleTodo(id: string, completed: boolean) {
+  // 同一のIDを持つドキュメントのcompletedを変更
+  await TDLists.doc(id).merge({
+    completed: !completed,
+    updatedAt: new Date(),
+  });
+}
+
+// リスト削除
+export async function deleteTodo(id: string) {
+  await TDLists.doc(id).delete();
+}

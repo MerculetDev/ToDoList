@@ -1,30 +1,83 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import TDMainMark from "@/components/TDMainMark/TDMainMark.vue";
 import TDToDoList from "@/components/TDToDoList/TDToDoList.vue";
 import TDAddButton from "@/components/TDAddButton/TDAddButton.vue";
+import TDTrashButton from "@/components/TDTrashButton/TDTrashButton.vue";
 import { auth } from "@/initFirebase";
 import { useRouter } from "vue-router";
 import { signOut } from "firebase/auth";
+import { TDLists, addTodo, toggleTodo, deleteTodo } from "@/models/TDLists.ts";
 
 // ToDoList.vueからのToDoアイテムの型定義
 type ToDoItem = {
+  id: string;
   text: string;
   completed: boolean;
 };
 
-// ToDoList.vueからのToDoリストのデータを保持するref
 const toDoList = ref<ToDoItem[]>([]);
+const deleteMode = ref<boolean>(false);
 
-const deleteMode = ref(false);
+// streamで取得したデータをリアクティブに扱う
+onMounted(async () => {
+  await TDLists.stream();
+});
 
-const addToDoList = () => {
-  toDoList.value.push({
+//コンポーネントが閉じた際、streamを閉じる
+onUnmounted(() => {
+  TDLists.closeStream();
+});
+
+const raw = computed(() => (TDLists as any).data);
+
+const items = computed<ToDoItem[]>(() => {
+  const d = raw.value;
+  const arr = !d
+    ? []
+    : Array.isArray(d)
+      ? d
+      : d instanceof Map
+        ? Array.from(d.values())
+        : typeof d === "object"
+          ? Object.values(d)
+          : [];
+  return arr.map((x: any) => ({
+    id: String(x.id),
+    text: String(x.text ?? ""),
+    completed: !!x.completed,
+  }));
+});
+
+watch(
+  items,
+  (v) => {
+    toDoList.value = v;
+  },
+  { immediate: true }
+);
+
+const text = ref("");
+const addToDoList = async () => {
+  await addTodo({
+    id: "",
+    UID: auth.currentUser?.uid,
     text: "",
     completed: false,
+    createdAt: "",
+    updatedAt: "",
   });
+  text.value = "";
 };
-import TDTrashButton from "@/components/TDTrashButton/TDTrashButton.vue";
+
+// ④ 子からのemitを受けて親で制御
+const toggleCompleted = async (id: string, completed: boolean) => {
+  await toggleTodo(id, completed);
+};
+
+const removeItem = async (id: string) => {
+  await deleteTodo(id);
+};
 
 console.log("現在のログイン状態:", auth.currentUser);
 
@@ -59,6 +112,8 @@ const logout = async (): Promise<void> => {
       uncheckedSrc="images/TDToDoListUncheckedIcon.svg"
       v-model="toDoList"
       :deleteMode="deleteMode"
+      @delete="removeItem"
+      @toggle="toggleCompleted"
     />
   </div>
   <TDAddButton
