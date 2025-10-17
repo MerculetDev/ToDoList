@@ -27,6 +27,8 @@ const props = withDefaults(
 const emit = defineEmits<{
   (e: "delete", id: string): void;
   (e: "toggle", id: string, completed: boolean): void;
+  (e: "focus", id: string): void;
+  (e: "blur", id: string): void;
 }>();
 
 //新しいアイテムを作成する関数
@@ -59,6 +61,8 @@ onMounted(() => {
       class="_todo_text_input"
       :class="{ 'is-completed': item.completed }"
       :readonly="item.completed"
+      @focus="emit('focus', item.id)"
+      @blur="emit('blur', item.id)"
     />
     <button @click="emit('delete', item.id)">
       <img
