@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 
+// 双方向にバインドするモデルの型定義
 interface ToDoItem {
+  id: string;
   text: string;
   completed: boolean;
 }
 const model = defineModel<ToDoItem[]>({ default: [] });
 
+//親から受け取るPropsの定義
 const props = withDefaults(
   defineProps<{
     trashSrc?: string;
@@ -20,9 +23,15 @@ const props = withDefaults(
   }
 );
 
+//親へイベントを発火させる
+const emit = defineEmits<{
+  (e: "delete", id: string): void;
+  (e: "toggle", id: string, completed: boolean): void;
+}>();
+
 //新しいアイテムを作成する関数
 function newItem(): ToDoItem {
-  return { text: "", completed: false };
+  return { id: "", text: "", completed: false };
 }
 
 onMounted(() => {
@@ -31,20 +40,6 @@ onMounted(() => {
     model.value.push(newItem());
   }
 });
-
-//リスト削除の関数
-function removeItem(index: number) {
-  model.value.splice(index, 1);
-}
-
-//チェックボックスの表示切替
-function toggle(index: number) {
-  const row = model.value[index]; //該当行を取得
-  if (!row) {
-    return;
-  }
-  row.completed = !row.completed;
-}
 </script>
 
 <template>
@@ -52,7 +47,7 @@ function toggle(index: number) {
     <img
       :src="item.completed ? props.checkedSrc : props.uncheckedSrc"
       alt="チェックボタン"
-      @click="toggle(index)"
+      @click="emit('toggle', item.id, item.completed)"
       class="_check_button"
     />
     <input
@@ -65,7 +60,7 @@ function toggle(index: number) {
       :class="{ 'is-completed': item.completed }"
       :readonly="item.completed"
     />
-    <button @click="removeItem(index)">
+    <button @click="emit('delete', item.id)">
       <img
         :src="props.trashSrc"
         alt="ゴミ箱アイコン"

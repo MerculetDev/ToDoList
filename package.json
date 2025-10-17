@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@codelic/datagen": "^1.0.7",
     "@magnetarjs/core": "^1.3.7",
     "@magnetarjs/plugin-firestore": "^1.3.7",
     "@magnetarjs/plugin-vue3": "^1.3.7",
