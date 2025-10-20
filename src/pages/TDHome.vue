@@ -26,7 +26,6 @@ type ToDoItem = {
 const model = defineModel<ToDoItem[]>({ default: [] });
 const deleteMode = ref<boolean>(false);
 const loading = ref<boolean>(false);
-const firstReady = ref<boolean>(false);
 
 // streamで取得したデータをリアクティブに扱う
 onMounted(async () => {
