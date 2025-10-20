@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
-
 // 双方向にバインドするモデルの型定義
 interface ToDoItem {
   id: string;
@@ -29,20 +27,7 @@ const emit = defineEmits<{
   (e: "toggle", id: string, completed: boolean): void;
   (e: "focus", id: string): void;
   (e: "blur", id: string): void;
-  (e: "newItem"): void;
 }>();
-
-//新しいアイテムを作成する関数
-function newItem(): ToDoItem {
-  return { id: "", text: "", completed: false };
-}
-
-onMounted(() => {
-  // 初回表示時：空なら1行だけ作る
-  if (model.value.length === 0) {
-    emit("newItem");
-  }
-});
 </script>
 
 <template>
