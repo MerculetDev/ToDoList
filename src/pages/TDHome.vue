@@ -134,10 +134,6 @@ const logout = async (): Promise<void> => {
 </script>
 
 <template>
-  <TDToDoListSpinner
-    src="images/TDToDoListLoadingSpinner.svg"
-    :loading="loading"
-  />
   <div class="_header">
     <div class="_header_icon">
       <TDMainMark src="images/TDMainMark.svg" />
@@ -167,6 +163,12 @@ const logout = async (): Promise<void> => {
     @click="addToDoList"
   />
   <button @click="logout">Logoutする</button>
+
+  <!-- ローディングスピナーの表示 -->
+  <TDToDoListSpinner
+    src="images/TDToDoListLoadingSpinner.svg"
+    :loading="loading"
+  />
 </template>
 
 <style scoped lang="sass">
