@@ -134,44 +134,41 @@ const logout = async (): Promise<void> => {
 </script>
 
 <template>
-  <div v-if="loading" class="_loading_spinner">
+  <div v-show="loading" class="_loading_spinner">
     <TDToDoListSpinner
       src="images/TDToDoListLoadingSpinner.svg"
-      alt="読み込み中のスピナー"
+      :loading="loading"
     />
   </div>
-
-  <div v-else>
-    <div class="_header">
-      <div class="_header_icon">
-        <TDMainMark src="images/TDMainMark.svg" />
-      </div>
-      <TDTrashButton
-        normalIconSrc="/images/TDOffTrashButton.svg"
-        deleteIconSrc="/images/TDOnTrashButton.svg"
-        @click="deleteMode = !deleteMode"
-      />
+  <div class="_header">
+    <div class="_header_icon">
+      <TDMainMark src="images/TDMainMark.svg" />
     </div>
-    <div class="_todo_list_container">
-      <TDToDoList
-        trashSrc="images/TDToDoListIcon.svg"
-        checkedSrc="images/TDToDoListCheckedIcon.svg"
-        uncheckedSrc="images/TDToDoListUncheckedIcon.svg"
-        v-model="model"
-        :deleteMode="deleteMode"
-        @delete="removeItem"
-        @toggle="toggleCompleted"
-        @focus="onFocus"
-        @blur="onBlur"
-      />
-    </div>
-    <TDAddButton
-      src="images/TDAddButton.svg"
+    <TDTrashButton
+      normalIconSrc="/images/TDOffTrashButton.svg"
+      deleteIconSrc="/images/TDOnTrashButton.svg"
+      @click="deleteMode = !deleteMode"
+    />
+  </div>
+  <div class="_todo_list_container">
+    <TDToDoList
+      trashSrc="images/TDToDoListIcon.svg"
+      checkedSrc="images/TDToDoListCheckedIcon.svg"
+      uncheckedSrc="images/TDToDoListUncheckedIcon.svg"
+      v-model="model"
       :deleteMode="deleteMode"
-      @click="addToDoList"
+      @delete="removeItem"
+      @toggle="toggleCompleted"
+      @focus="onFocus"
+      @blur="onBlur"
     />
-    <button @click="logout">Logoutする</button>
   </div>
+  <TDAddButton
+    src="images/TDAddButton.svg"
+    :deleteMode="deleteMode"
+    @click="addToDoList"
+  />
+  <button @click="logout">Logoutする</button>
 </template>
 
 <style scoped lang="sass">
@@ -199,7 +196,14 @@ body
   width: calc(100% - 48px) //48px分の余白を取る
   margin: 4px auto // 中央寄せ
 ._loading_spinner
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background-color: #FFFFFF
+  opacity: 0.8
+  z-index: 10
   display: grid
-  place-items: center
-  height: 100vh
+  place-content: center
 </style>
