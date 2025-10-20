@@ -4,6 +4,7 @@ import TDMainMark from "@/components/TDMainMark/TDMainMark.vue";
 import TDToDoList from "@/components/TDToDoList/TDToDoList.vue";
 import TDAddButton from "@/components/TDAddButton/TDAddButton.vue";
 import TDTrashButton from "@/components/TDTrashButton/TDTrashButton.vue";
+import TDToDoListSpinner from "@/components/TDToDoListSpinner/TDToDoListSpinner.vue";
 import { auth } from "@/initFirebase";
 import { useRouter } from "vue-router";
 import { signOut } from "firebase/auth";
@@ -24,6 +25,7 @@ type ToDoItem = {
 
 const model = defineModel<ToDoItem[]>({ default: [] });
 const deleteMode = ref<boolean>(false);
+const loading = ref<boolean>(false);
 
 // streamで取得したデータをリアクティブに扱う
 onMounted(async () => {
@@ -41,8 +43,7 @@ const raw = computed(() =>
     text: x.text,
     completed: x.completed,
   }))
-)
-
+);
 
 // const items = computed<ToDoItem[]>(() => {
 //   const d = raw.value;
@@ -111,7 +112,9 @@ const onBlur = async (id: string) => {
   focusSnap.value.delete(id);
 
   if (before !== after) {
+    loading.value = true;
     await updateText(id, after);
+    loading.value = false;
   }
 };
 
@@ -131,7 +134,6 @@ const logout = async (): Promise<void> => {
 </script>
 
 <template>
-  {{ raw }}
   <div class="_header">
     <div class="_header_icon">
       <TDMainMark src="images/TDMainMark.svg" />
@@ -161,6 +163,12 @@ const logout = async (): Promise<void> => {
     @click="addToDoList"
   />
   <button @click="logout">Logoutする</button>
+
+  <!-- ローディングスピナーの表示 -->
+  <TDToDoListSpinner
+    src="images/TDToDoListLoadingSpinner.svg"
+    :loading="loading"
+  />
 </template>
 
 <style scoped lang="sass">
