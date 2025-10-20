@@ -134,12 +134,10 @@ const logout = async (): Promise<void> => {
 </script>
 
 <template>
-  <div v-show="loading" class="_loading_spinner">
-    <TDToDoListSpinner
-      src="images/TDToDoListLoadingSpinner.svg"
-      :loading="loading"
-    />
-  </div>
+  <TDToDoListSpinner
+    src="images/TDToDoListLoadingSpinner.svg"
+    :loading="loading"
+  />
   <div class="_header">
     <div class="_header_icon">
       <TDMainMark src="images/TDMainMark.svg" />
@@ -195,15 +193,4 @@ body
 ._todo_list_container
   width: calc(100% - 48px) //48px分の余白を取る
   margin: 4px auto // 中央寄せ
-._loading_spinner
-  position: fixed
-  top: 0
-  left: 0
-  width: 100%
-  height: 100%
-  background-color: #FFFFFF
-  opacity: 0.8
-  z-index: 10
-  display: grid
-  place-content: center
 </style>
