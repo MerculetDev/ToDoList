@@ -29,6 +29,7 @@ const emit = defineEmits<{
   (e: "toggle", id: string, completed: boolean): void;
   (e: "focus", id: string): void;
   (e: "blur", id: string): void;
+  (e: "newItem"): void;
 }>();
 
 //新しいアイテムを作成する関数
@@ -39,7 +40,7 @@ function newItem(): ToDoItem {
 onMounted(() => {
   // 初回表示時：空なら1行だけ作る
   if (model.value.length === 0) {
-    model.value.push(newItem());
+    emit("newItem");
   }
 });
 </script>

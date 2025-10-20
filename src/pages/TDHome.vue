@@ -41,8 +41,7 @@ const raw = computed(() =>
     text: x.text,
     completed: x.completed,
   }))
-)
-
+);
 
 // const items = computed<ToDoItem[]>(() => {
 //   const d = raw.value;
@@ -131,7 +130,6 @@ const logout = async (): Promise<void> => {
 </script>
 
 <template>
-  {{ raw }}
   <div class="_header">
     <div class="_header_icon">
       <TDMainMark src="images/TDMainMark.svg" />
@@ -153,6 +151,7 @@ const logout = async (): Promise<void> => {
       @toggle="toggleCompleted"
       @focus="onFocus"
       @blur="onBlur"
+      @newItem="addToDoList"
     />
   </div>
   <TDAddButton
