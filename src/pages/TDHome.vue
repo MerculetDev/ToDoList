@@ -82,9 +82,13 @@ watch(
   (v, oldV) => {
     model.value = v;
     // ひとつ前の状態がundefinedではなくなるまで待ってから、新規追加を行う
+    console.log("watch発火前:", { v, oldV });
     if (oldV === undefined) return;
+    console.log("oldV === undefined", { v, oldV });
     if (stopCreatedInitialToDo.value) return;
+    console.log(stopCreatedInitialToDo.value, { v, oldV });
     if (model.value.length === 0) addToDoList();
+    console.log("model.value.length", { v, oldV });
   },
   { immediate: true, flush: "post" }
 );
