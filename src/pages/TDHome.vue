@@ -178,9 +178,7 @@ const logout = async (): Promise<void> => {
 </template>
 
 <style scoped lang="sass">
-body
-  margin: 0
-  padding: 0
+
 ._header
   display: grid
   place-items: center
