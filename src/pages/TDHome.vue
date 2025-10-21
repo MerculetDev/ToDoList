@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, watch } from "vue";
+import { ref, onMounted, onUnmounted, computed, watch, nextTick } from "vue";
 import TDMainMark from "@/components/TDMainMark/TDMainMark.vue";
 import TDToDoList from "@/components/TDToDoList/TDToDoList.vue";
 import TDAddButton from "@/components/TDAddButton/TDAddButton.vue";
@@ -30,6 +30,7 @@ const loading = ref<boolean>(false);
 // streamで取得したデータをリアクティブに扱う
 onMounted(async () => {
   await TDLists.stream();
+  await nextTick();
 });
 
 //コンポーネントが閉じた際、streamを閉じる
@@ -62,15 +63,6 @@ const raw = computed(() =>
 //     completed: !!x.completed,
 //   }));
 // });
-
-watch(
-  raw,
-  (v) => {
-    model.value = v;
-  },
-  { immediate: true }
-);
-
 const text = ref("");
 const addToDoList = async () => {
   await addTodo({
@@ -83,6 +75,17 @@ const addToDoList = async () => {
   });
   text.value = "";
 };
+
+watch(
+  raw,
+  (v, oldV) => {
+    model.value = v;
+    // ひとつ前の状態がundefinedではなくなるまで待ってから、新規追加を行う
+    if (oldV === undefined) return;
+    if (model.value.length === 0) addToDoList();
+  },
+  { immediate: true, flush: "post" }
+);
 
 const toggleCompleted = async (id: string, completed: boolean) => {
   await toggleTodo(id, completed);
