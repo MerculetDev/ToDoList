@@ -26,6 +26,7 @@ type ToDoItem = {
 const model = defineModel<ToDoItem[]>({ default: [] });
 const deleteMode = ref<boolean>(false);
 const loading = ref<boolean>(false);
+const stopCreatedInitialToDo = ref<boolean>(false);
 
 // streamで取得したデータをリアクティブに扱う
 onMounted(async () => {
@@ -45,6 +46,7 @@ const raw = computed(() =>
     completed: x.completed,
   }))
 );
+console.log("raw:", raw.value);
 
 // const items = computed<ToDoItem[]>(() => {
 //   const d = raw.value;
@@ -80,9 +82,13 @@ watch(
   raw,
   (v, oldV) => {
     model.value = v;
-    // ひとつ前の状態がundefinedではなくなるまで待ってから、新規追加を行う
+    console.log("watch発火前:", { v, oldV });
     if (oldV === undefined) return;
+    console.log("oldV === undefined", { v, oldV });
+    if (stopCreatedInitialToDo.value) return;
+    console.log(stopCreatedInitialToDo.value, { v, oldV });
     if (model.value.length === 0) addToDoList();
+    console.log("model.value.length", { v, oldV });
   },
   { immediate: true, flush: "post" }
 );
@@ -92,6 +98,7 @@ const toggleCompleted = async (id: string, completed: boolean) => {
 };
 
 const removeItem = async (id: string) => {
+  stopCreatedInitialToDo.value = true;
   await deleteTodo(id);
 };
 
