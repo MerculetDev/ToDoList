@@ -27,7 +27,7 @@ const model = defineModel<ToDoItem[]>({ default: [] });
 const deleteMode = ref<boolean>(false);
 const loading = ref<boolean>(false);
 const stopCreatedInitialToDo = ref<boolean>(false);
-const isAllDeleted = ref<boolean>(false);
+
 // streamで取得したデータをリアクティブに扱う
 onMounted(async () => {
   await TDLists.stream();
@@ -67,7 +67,6 @@ console.log("raw:", raw.value);
 // });
 const text = ref("");
 const addToDoList = async () => {
-  if(isAllDeleted.value) isAllDeleted.value=false
   await addTodo({
     id: "",
     UID: auth.currentUser?.uid,
@@ -81,21 +80,18 @@ const addToDoList = async () => {
 
 watch(
   raw,
-  (v) => {
-    console.log('rawのwatch発火:', { v});
-    if(isAllDeleted.value)return
+  (v, oldV) => {
     model.value = v;
-    console.log("watch発火前:", { v,  });
-    if (v === undefined) return;
-    console.log("oldV === undefined", { v });
+    console.log("watch発火前:", { v, oldV });
+    if (oldV === undefined) return;
+    console.log("oldV === undefined", { v, oldV });
     if (stopCreatedInitialToDo.value) return;
-    console.log(stopCreatedInitialToDo.value, { v});
+    console.log(stopCreatedInitialToDo.value, { v, oldV });
     if (model.value.length === 0) addToDoList();
-    console.log("model.value.length", { v });
+    console.log("model.value.length", { v, oldV });
   },
   { immediate: true, flush: "post" }
 );
-
 
 const toggleCompleted = async (id: string, completed: boolean) => {
   await toggleTodo(id, completed);
@@ -103,11 +99,6 @@ const toggleCompleted = async (id: string, completed: boolean) => {
 
 const removeItem = async (id: string) => {
   stopCreatedInitialToDo.value = true;
-  //  const restArray = model.value.filter((item) => item.id !== id);
-  // model.value = restArray;
-  // if(model.value.length===0){
-  //   isAllDeleted.value=true
-  // }
   await deleteTodo(id);
 };
 
