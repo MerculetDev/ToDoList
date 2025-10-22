@@ -72,10 +72,6 @@ console.log("現在のログイン状態:", auth.currentUser);
       @click="login"
     />
   </div>
-
-  // テスト用ボタン
-  <button @click="$router.push('/test')">TestPage</button>
-  <button @click="$router.push('/home')">Homeに戻る</button>
 </template>
 
 <style lang="sass" scoped>
