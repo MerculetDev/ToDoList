@@ -36,7 +36,7 @@ console.log("現在のログイン状態:", auth.currentUser);
 
 <template>
   <div class="_main_mark_container">
-    <TDMainMark src="/images/TDMainMark.svg" />
+    <TDMainMark src="/images/TDMainMark.svg" height="115px" width="115px" />
   </div>
   <div class="_error_message_container">
     <TDErrorMessage :errorMessage="error" :error="!!error" />

@@ -139,7 +139,7 @@ const logout = async (): Promise<void> => {
 <template>
   <div class="_header">
     <div class="_header_icon">
-      <TDMainMark src="images/TDMainMark.svg" />
+      <TDMainMark src="images/TDMainMark.svg" height="54px" width="54px" />
     </div>
     <TDTrashButton
       normalIconSrc="/images/TDOffTrashButton.svg"
@@ -183,14 +183,10 @@ const logout = async (): Promise<void> => {
   grid-template-columns: 1fr 1fr
   margin: 48px 24px 24px 16px
 ._header_icon
-  height: 54px
-  width: 54px
   display: grid
   justify-self: start
   overflow: hidden
   :is(img, svg)
-    width: 100%
-    height: 100%
     object-fit: contain
     display: block
 ._todo_list_container
