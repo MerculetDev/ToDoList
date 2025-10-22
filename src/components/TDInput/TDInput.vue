@@ -21,6 +21,7 @@ const data = defineProps<InputData>();
       <label for="email" class="_email_label">メールアドレス</label>
       <input
         type="email"
+        autocomplete="email username"
         id="email"
         name="email"
         v-model="value"
@@ -38,6 +39,7 @@ const data = defineProps<InputData>();
       <label for="password" class="_password_label">パスワード</label>
       <input
         :type="visible ? 'text' : 'password'"
+        autocomplete="password"
         id="password"
         name="password"
         v-model="value"

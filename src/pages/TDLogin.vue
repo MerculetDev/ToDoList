@@ -19,10 +19,21 @@ const router = useRouter();
 
 const login = async (): Promise<void> => {
   error.value = "";
+  visible.value = false;
   try {
     await signInWithEmailAndPassword(auth, email.value, password.value);
-    //ログイン成功後、Homeに遷移
-    router.push("/home");
+    if ("credentials" in navigator) {
+      try {
+        // @ts-ignore  // lib.dom が有効なら不要
+        const cred = new PasswordCredential({
+          id: email.value,
+          password: password.value,
+        });
+        // @ts-ignore
+        await navigator.credentials.store(cred);
+      } catch {}
+    }
+    setTimeout(() => router.push("/home"), 120);
   } catch (e: any) {
     error.value = "ログインIDまたはパスワードに誤りがあります";
   } finally {
