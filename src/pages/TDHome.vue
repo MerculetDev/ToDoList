@@ -5,6 +5,7 @@ import TDToDoList from "@/components/TDToDoList/TDToDoList.vue";
 import TDAddButton from "@/components/TDAddButton/TDAddButton.vue";
 import TDTrashButton from "@/components/TDTrashButton/TDTrashButton.vue";
 import TDToDoListSpinner from "@/components/TDToDoListSpinner/TDToDoListSpinner.vue";
+import TDLoginButton from "@/components/TDLoginButton/TDLoginButton.vue";
 import { auth } from "@/initFirebase";
 import { useRouter } from "vue-router";
 import { signOut } from "firebase/auth";
@@ -165,8 +166,9 @@ const logout = async (): Promise<void> => {
     :deleteMode="deleteMode"
     @click="addToDoList"
   />
-  <button @click="logout">Logoutする</button>
-
+  <div class="_login_button_container">
+    <TDLoginButton :buttonText="'ログアウト'" src="" @click="logout" />
+  </div>
   <!-- ローディングスピナーの表示 -->
   <TDToDoListSpinner
     src="images/TDToDoListLoadingSpinner.svg"
@@ -192,4 +194,7 @@ const logout = async (): Promise<void> => {
 ._todo_list_container
   width: calc(100% - 48px) //48px分の余白を取る
   margin: 4px auto // 中央寄せ
+._login_button_container
+  width: calc(100% - 60px)
+  margin: 0 auto
 </style>

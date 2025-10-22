@@ -11,19 +11,18 @@ const props = defineProps<LoginButtonProps>();
 
 <template>
   <div class="_login_button_wrapper">
-    <button class="_login_button_container">
+    <button class="_login_button_container" :class="{ _noicon: !props.src }">
       <div class="_login_button_text">{{ props.buttonText }}</div>
       <div
         class="_login_button_icon"
         :style="{ '--icon-url': `url(${props.src})` }"
+        v-if="props.src"
       ></div>
     </button>
   </div>
 </template>
 
 <style scoped lang="sass">
-
-@media screen and (max-width: 768px)
 button
   margin: 0
   padding: 0
@@ -60,6 +59,8 @@ button
   justify-content: center
   grid-template-columns: max-content max-content
   gap: 10px
+._noicon
+  grid-template-columns: max-content
 ._login_button_text
   display: grid
   place-items: center
